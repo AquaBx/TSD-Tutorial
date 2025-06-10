@@ -1,3 +1,6 @@
+import kotlin.math.pow
+import kotlin.math.sqrt
+
 fun main() {
     // Test cases for each function - students shouldn't modify these
     run5PointTests()
@@ -15,7 +18,15 @@ fun main() {
  */
 fun sumOfDigits(number: Int): Int {
     // TODO: Implement this function
-    return 0
+    var somme = 0
+    var copyOfNumber = number
+    while (copyOfNumber > 10) {
+        somme += copyOfNumber % 10
+        copyOfNumber /= 10
+    }
+    somme += copyOfNumber
+
+    return somme
 }
 
 /**
@@ -26,7 +37,10 @@ fun sumOfDigits(number: Int): Int {
  */
 fun fibonacci(n: Int): Int {
     // TODO: Implement this function
-    return 0
+    if (n == 0) return 0
+    if (n == 1) return 1
+
+    return fibonacci(n-1)+fibonacci(n-2)
 }
 
 /**
@@ -42,7 +56,13 @@ fun fibonacci(n: Int): Int {
  */
 fun pointsToGrade(points: Int): Char {
     // TODO: Implement this function
-    return 'F'
+    return when {
+        points > 90 -> return 'A'
+        points > 80 -> return 'B'
+        points > 70 -> return 'C'
+        points > 60 -> return 'D'
+        else -> 'F'
+    };
 }
 
 /**
@@ -52,8 +72,8 @@ fun pointsToGrade(points: Int): Char {
  * @return Factorial of n
  */
 fun factorial(n: Int): Int {
-    // TODO: Implement this function
-    return 0
+    if (n == 0) return 1
+    return n * factorial(n-1)
 }
 
 /**
@@ -63,8 +83,14 @@ fun factorial(n: Int): Int {
  * @return true if prime, false otherwise
  */
 fun isPrime(n: Int): Boolean {
-    // TODO: Implement this function
-    return false
+
+    for (i in 2..n / 2) {
+        if (n % i == 0) {
+            return false;
+        }
+    }
+
+    return true
 }
 
 /**
@@ -73,7 +99,13 @@ fun isPrime(n: Int): Boolean {
  * @return true if any even number exists, false otherwise
  */
 fun containsEven(list: List<Int>): Boolean {
-    // TODO: Implement this function
+
+    for (it in list) {
+        if (it % 2 == 0){
+            return true
+        }
+    }
+
     return false
 }
 
@@ -82,8 +114,13 @@ fun containsEven(list: List<Int>): Boolean {
  * Formula: sum(numbers) / count(numbers)
  */
 fun arithmeticMean(list: List<Double>): Double {
-    // TODO: Implement this function
-    return 0.0
+    var somme = 0.0
+
+    for (it in list) {
+        somme += it
+    }
+
+    return somme / list.size
 }
 
 /**
@@ -91,8 +128,13 @@ fun arithmeticMean(list: List<Double>): Double {
  * Formula: nth root of (x1 * x2 * ... * xn)
  */
 fun geometricMean(list: List<Double>): Double {
-    // TODO: Implement this function
-    return 0.0
+    var somme = 1.0
+
+    for (it in list) {
+        somme *= it
+    }
+
+    return somme.pow(1.0 / list.size)
 }
 
 /**
@@ -100,8 +142,13 @@ fun geometricMean(list: List<Double>): Double {
  * Formula: n / (1/x1 + 1/x2 + ... + 1/xn)
  */
 fun harmonicMean(list: List<Double>): Double {
-    // TODO: Implement this function
-    return 0.0
+    var somme = 0.0
+
+    for (it in list) {
+        somme += 1/it
+    }
+
+    return list.size / somme
 }
 
 /**
@@ -109,8 +156,13 @@ fun harmonicMean(list: List<Double>): Double {
  * Formula: square root of (sum(x²) / n)
  */
 fun quadraticMean(list: List<Double>): Double {
-    // TODO: Implement this function
-    return 0.0
+    var somme = 0.0
+
+    for (it in list) {
+        somme += it*it
+    }
+
+    return sqrt(somme/list.size)
 }
 
 /* 10-POINT FUNCTIONS (Implement all these) */
@@ -124,8 +176,11 @@ fun quadraticMean(list: List<Double>): Double {
  * @return true if anagrams, false otherwise
  */
 fun isAnagram(s1: String, s2: String): Boolean {
-    // TODO: Implement this function
-    return false
+
+    val sl1 = s1.toList().sorted()
+    val sl2 = s2.toList().sorted()
+
+    return sl1 == sl2
 }
 
 /**
@@ -134,11 +189,22 @@ fun isAnagram(s1: String, s2: String): Boolean {
  * @return List of all prime numbers ≤ n
  */
 fun sieveOfEratosthenes(n: Int): List<Int> {
-    // TODO: Implement this function
-    return emptyList()
+    val L = BooleanArray(n + 1) { true }
+    L[0] = false
+    L[1] = false
+
+    for (i in 2..n) {
+        if (L[i]) {
+            for (j in i * i..n step i) {
+                L[j] = false
+            }
+        }
+    }
+
+    return (2..n).filter { L[it] }
 }
 
-/**
+    /**
  * Checks if a string is a palindrome (reads same backward as forward).
  * Should be case-insensitive and ignore spaces.
  * Example: "A man a plan a canal Panama" is a palindrome
@@ -146,8 +212,12 @@ fun sieveOfEratosthenes(n: Int): List<Int> {
  * @return true if palindrome, false otherwise
  */
 fun isPalindrome(s: String): Boolean {
-    // TODO: Implement this function
-    return false
+    for (i in 0 .. s.length - 1) {
+        if (s[i] != s[s.length - 1 - i]) {
+            return false
+        }
+    }
+    return true
 }
 
 /* 15-POINT FUNCTION (Implement this) */
